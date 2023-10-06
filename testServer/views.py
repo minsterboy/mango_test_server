@@ -1,7 +1,8 @@
-from django.utils import timezone
-from rest_framework import generics
+from rest_framework import generics,status
 from .models import Post
 from .serializers import PostSerializer
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 class PostListCreateView(generics.ListAPIView):
     queryset = Post.objects.all()
@@ -11,11 +12,10 @@ class PostDetailView(generics.RetrieveAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
-
-def send(request):
-    if request.method == 'POST':
-        form = PostSerializer(request.POST)
-        if form.is_valid():
-            question = form.save(commit=False)
-            question.create_date = timezone.now()
-            question.save()
+@api_view(['POST'])
+def postUser(request):
+    post = PostSerializer(data=request.data)
+    if post.is_valid():
+        post.save()
+        return Response(post.data)
+    return Response(post.errors,status=status.HTTP_400_BAD_REQUEST)
