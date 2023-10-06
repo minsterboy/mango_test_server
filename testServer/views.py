@@ -11,12 +11,12 @@ class PostDetailView(generics.RetrieveAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
-class post_create(Post):
-    def send(self,request):
-        if request.method == 'POST':
-            form = PostSerializer(request.POST)
-            if form.is_valid():
-                question = form.save(commit=False)
-                question.create_date = timezone.now()
-                question.save()
+
+def send(request):
+    if request.method == 'POST':
+        form = PostSerializer(request.POST)
+        if form.is_valid():
+            question = form.save(commit=False)
+            question.create_date = timezone.now()
+            question.save()
 
