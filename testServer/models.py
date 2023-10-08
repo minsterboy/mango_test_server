@@ -2,5 +2,6 @@ from django.db import models
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
-    body = models.TextField()
-    photo = models.ImageField(upload_to='images/')
+    content = models.TextField()
+    thumb = models.ImageField(upload_to='thumbs/')
+    img = models.ImageField(upload_to='images/')
